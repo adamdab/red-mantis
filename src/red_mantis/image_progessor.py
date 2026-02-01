@@ -2,8 +2,8 @@ from pathlib import Path
 from PIL import Image, ExifTags
 
 def get_jpg_files(directory:str) -> list[Path]:
-    """Return a list of .jpg files in the given directory."""
-    return [f for f in Path(directory).glob('*.jpg')]
+    """Return a list of .jpg or .jpeg files in the given directory."""
+    return [f for f in Path(directory).glob('*.jpg')] + [f for f in Path(directory).glob('*.jpeg')] 
 
 def extract_metadata(image_path:Path) -> dict:
     """Extract metadata from the image file."""
