@@ -1,6 +1,7 @@
 import argparse
 from contextlib import suppress
 import red_mantis.image_progessor as img_proc
+import red_mantis.file_generator as file_gen
 
 def main():
     parser = argparse.ArgumentParser(
@@ -35,6 +36,11 @@ def main():
                  "GPSCoordinates": img_proc.get_coordinates(gps_info)})
 
     print(f"...Of which {len(tracable_photos)} contain GPS information.")
+
+    file_gen.generate_kml(args.output, tracable_photos)
+
+    print("red-mantis has finished successfully.")
+    print("...Done.")
 
 if __name__ == "__main__":
     main()
