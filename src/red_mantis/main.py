@@ -7,8 +7,13 @@ def main():
         prog="red-mantis",
         description="Your travel tracker from photos")
     
-    parser.add_argument('photo_dir', type=str, help='Directory containing photos to process')
-    parser.add_argument('--output', type=str, default='travel.kml', help='Output report file')
+    parser.add_argument('photo_dir',
+                        type=str,
+                        help='Directory containing photos to process')
+    parser.add_argument('--output',
+                        type=str,
+                        default='travel.kml',
+                        help='Output report file')
 
     args = parser.parse_args()
     print("Running red-mantis with the following parameters:")
@@ -19,14 +24,15 @@ def main():
 
     print(f"...Found {len(paths_jpg)} JPG files in the directory.")
 
-    first_photo = paths_jpg[0] if paths_jpg else None
-
     tracable_photos = []
     for photo_path in paths_jpg:
         with suppress(KeyError):
             metadata = img_proc.extract_metadata(photo_path)
             gps_info = img_proc.get_gps_info(metadata)
-            tracable_photos.append((photo_path, gps_info))
+            tracable_photos.append(
+                {"ImgPath": photo_path,
+                 "GPSMetadata":gps_info,
+                 "GPSCoordinates": img_proc.get_coordinates(gps_info)})
 
     print(f"...Of which {len(tracable_photos)} contain GPS information.")
 
