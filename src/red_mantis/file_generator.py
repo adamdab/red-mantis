@@ -8,9 +8,12 @@ def generate_kml(file_path: str, photos: list[dict]) -> None:
 
     for photo in photos:
         coords = photo["GPSCoordinates"]
+
         if coords:
             pnt = kml.newpoint(name=photo["ImgPath"].name,
                                coords=[(coords['Longitude'], coords['Latitude'])])
-            pnt.description = f"Photo taken at {coords['Latitude']}, {coords['Longitude']}"
+            pnt.description = f"Photo: {photo['ImgPath'].name}\n" \
+                              f"Latitude: {coords['Latitude']}\n" \
+                              f"Longitude: {coords['Longitude']}"
     
     kml.save(file_path)

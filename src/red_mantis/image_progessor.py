@@ -37,8 +37,8 @@ def get_decimal_from_dms(dms, ref):
         decimal = -decimal
     return decimal
 
-def get_coordinates(gps_info:dict) -> tuple[float, float]:
+def get_coordinates(gps_info:dict) -> dict:
     """Get latitude and longitude from GPS information."""
     lat = get_decimal_from_dms(gps_info['GPSLatitude'], gps_info['GPSLatitudeRef'])
     lon = get_decimal_from_dms(gps_info['GPSLongitude'], gps_info['GPSLongitudeRef'])
-    return (lat, lon)
+    return {'Latitude': lat, 'Longitude': lon}
