@@ -1,7 +1,9 @@
 import argparse
+from pathlib import Path
 from contextlib import suppress
-import red_mantis.image_progessor as img_proc
-import red_mantis.file_generator as file_gen
+
+from red_mantis.core import extractors
+from red_mantis.core import kml
 
 def main():
     parser = argparse.ArgumentParser(
@@ -21,23 +23,20 @@ def main():
     print(f"Photo Directory: {args.photo_dir}")
     print(f"Output Report File: {args.output}")
 
-    paths_jpg = img_proc.get_jpg_files(args.photo_dir)
+    image_paths = extractors.extract_all_photo_paths(Path(args.photo_dir))
 
-    print(f"...Found {len(paths_jpg)} JPG files in the directory.")
+    print(f"...Found {len(image_paths)} JPG files in the directory.")
 
     tracable_photos = []
-    for photo_path in paths_jpg:
-        with suppress(KeyError):
-            metadata = img_proc.extract_metadata(photo_path)
-            gps_info = img_proc.get_gps_info(metadata)
-            tracable_photos.append(
-                {"ImgPath": photo_path,
-                 "GPSMetadata":gps_info,
-                 "GPSCoordinates": img_proc.get_coordinates(gps_info)})
+    for photo_path in image_paths:
+        with suppress((ValueError, KeyError, FileNotFoundError)):
+            photo_metadata = extractors.extract_photo_information(photo_path)
+            if photo_metadata.gps_metadata:
+                tracable_photos.append(photo_metadata)
 
     print(f"...Of which {len(tracable_photos)} contain GPS information.")
 
-    file_gen.generate_kml(args.output, tracable_photos)
+    kml.generate(Path(args.output), tracable_photos)    
 
     print("red-mantis has finished successfully.")
     print("...Done.")
