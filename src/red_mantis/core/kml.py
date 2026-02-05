@@ -1,14 +1,15 @@
 import simplekml
+import logging
 from pathlib import Path
-from red_mantis.models.metadata import PhotoCluster
+from red_mantis.models.photo import Cluster
 
 
-def generate(file_path: Path, photos: list[PhotoCluster]) -> None:
+def generate(file_path: Path, photos: list[Cluster]) -> None:
     """Generate a KML file from the list of photos with GPS coordinates."""
 
     kml = simplekml.Kml()
     
-    print(f"Generating KML file at: {file_path}")
+    logging.info(f"Generating KML file at: {file_path}")
 
     for cluster in photos:
         pnt = kml.newpoint(name=f"[{len(cluster.photos)} Photos]",

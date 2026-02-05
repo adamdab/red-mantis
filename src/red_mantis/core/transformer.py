@@ -1,7 +1,8 @@
-from red_mantis.models.metadata import PhotoMetadata, PhotoCluster, DecimalGPSMetadata
+from red_mantis.models.gps import Metadata, Decimal
+from red_mantis.models.photo import Cluster
 from sklearn.cluster import DBSCAN
 
-def cluster_by_distance(photos: list[PhotoMetadata], max_distance_meters: float) -> list[PhotoCluster]:
+def cluster_by_distance(photos: list[Metadata], max_distance_meters: float) -> list[Cluster]:
     """Cluster photos based on GPS coordinates within a specified distance.
     Args:
         photos (list[PhotoMetadata]): List of photo metadata with GPS information.
@@ -16,14 +17,14 @@ def cluster_by_distance(photos: list[PhotoMetadata], max_distance_meters: float)
     for label in set(db.labels_):
         cluster_photos = [photos[idx] for idx, cluster_label in enumerate(db.labels_) if cluster_label == label]
         if cluster_photos:
-            cluster_center = DecimalGPSMetadata(
+            cluster_center = Decimal(
                 latitude=sum(photo.gps_metadata.get_latitude() for photo in cluster_photos) / len(cluster_photos),
                 longitude=sum(photo.gps_metadata.get_longitude() for photo in cluster_photos) / len(cluster_photos)
             )
-            clusters.append(PhotoCluster(center=cluster_center, photos=cluster_photos))
+            clusters.append(Cluster(center=cluster_center, photos=cluster_photos))
     return clusters
 
-def cluster_by_identity(photos: list[PhotoMetadata]) -> list[PhotoCluster]:
+def cluster_by_identity(photos: list[Metadata]) -> list[Cluster]:
     """
     Cluster photos by identity GPS coordinates (each photo forms its own cluster).
     Args:
@@ -31,4 +32,4 @@ def cluster_by_identity(photos: list[PhotoMetadata]) -> list[PhotoCluster]:
     Returns:
         list[PhotoCluster]: A list of PhotoCluster objects, each containing a single photo.
     """
-    return [ PhotoCluster(center=photo.gps_metadata, photos=[photo]) for photo in photos ]
+    return [ Cluster(center=photo.gps_metadata, photos=[photo]) for photo in photos ]

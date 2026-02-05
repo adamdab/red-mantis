@@ -1,14 +1,20 @@
 from dataclasses import dataclass
-from typing import Protocol
+from typing import Protocol, runtime_checkable
 
-class GPSMetadata(Protocol):
-    def get_latitude(self) -> float:
+
+@runtime_checkable
+class Metadata(Protocol):
+    """Protocol describing GPS coordinate accessors used across the project."""
+
+    def get_latitude(self) -> float:  # pragma: no cover - simple accessor
         ...
-    def get_longitude(self) -> float:
+
+    def get_longitude(self) -> float:  # pragma: no cover - simple accessor
         ...
+
 
 @dataclass(frozen=True)
-class DMSGPSMetadata:
+class DMS:
     dms_latitude: tuple
     lat_ref: str
     dms_longitude: tuple
@@ -19,34 +25,24 @@ class DMSGPSMetadata:
         minutes = dms[1] / 60.0
         seconds = dms[2] / 3600.0
         decimal = degrees + minutes + seconds
-        if ref in ['S', 'W']:
+        if ref in ("S", "W"):
             decimal = -decimal
         return decimal
-    
+
     def get_latitude(self) -> float:
         return self._convert_dms_to_decimal(self.dms_latitude, self.lat_ref)
-    
+
     def get_longitude(self) -> float:
         return self._convert_dms_to_decimal(self.dms_longitude, self.lon_ref)
-    
+
+
 @dataclass(frozen=True)
-class DecimalGPSMetadata:
+class Decimal:
     latitude: float
     longitude: float
 
     def get_latitude(self) -> float:
         return self.latitude
-    
+
     def get_longitude(self) -> float:
         return self.longitude
-    
-@dataclass(frozen=True)
-class PhotoMetadata:
-    img_path: str
-    gps_metadata: GPSMetadata | None
-    date_taken: str | None = None
-
-@dataclass(frozen=True)
-class PhotoCluster:
-    center: GPSMetadata
-    photos: list[PhotoMetadata]

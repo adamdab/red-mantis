@@ -1,6 +1,7 @@
 from pathlib import Path
 from PIL import Image, ExifTags
-from red_mantis.models.metadata import DMSGPSMetadata, GPSMetadata, PhotoMetadata
+from red_mantis.models.gps import DMS, Metadata as GPSMetadata
+from red_mantis.models.photo import Metadata as PhotoMetadata
 from red_mantis.models.constants import ImageFormats
 
 def extract_all_photo_paths(directory: Path) -> list[Path]:
@@ -44,7 +45,7 @@ def _extract_jpg_gps_info(metadata: dict) -> GPSMetadata:
         return None
     gps_data = { ExifTags.GPSTAGS.get(tag): value
                  for tag, value in gps_info.items() if tag in ExifTags.GPSTAGS }
-    return DMSGPSMetadata(
+    return DMS(
         dms_latitude=gps_data['GPSLatitude'],
         lat_ref=gps_data['GPSLatitudeRef'],
         dms_longitude=gps_data['GPSLongitude'],
