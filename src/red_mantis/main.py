@@ -44,9 +44,10 @@ def main():
             if photo_metadata.gps_metadata:
                 tracable_photos.append(photo_metadata)
 
-    logging.info(f"{len(tracable_photos)}/{len(image_paths)} contain GPS information")    
+    logging.info(f"{len(tracable_photos)}/{len(image_paths)} contain GPS information")
 
-    clustered_photos = transformer.cluster_by_distance(tracable_photos, max_distance_meters=args.cluster_dist)
+    clustered_photos = transformer.cluster_by_distance(tracable_photos,
+                                                       max_distance_meters=args.cluster_dist)
     
     logging.info(f"Clustered into {len(clustered_photos)} groups")
     
