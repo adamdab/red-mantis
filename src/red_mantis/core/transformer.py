@@ -1,8 +1,8 @@
 from red_mantis.models.gps import Metadata, Decimal
-from red_mantis.models.photo import Cluster
+from red_mantis.models.photo import DistanceCluster
 from sklearn.cluster import DBSCAN
 
-def cluster_by_distance(photos: list[Metadata], max_distance_meters: float) -> list[Cluster]:
+def cluster_by_distance(photos: list[Metadata], max_distance_meters: float) -> list[DistanceCluster]:
     """Cluster photos based on GPS coordinates within a specified distance.
     Args:
         photos (list[PhotoMetadata]): List of photo metadata with GPS information.
@@ -10,7 +10,8 @@ def cluster_by_distance(photos: list[Metadata], max_distance_meters: float) -> l
     Returns:
         dict[ tuple, list[PhotoMetadata]]: A dictionary where keys are cluster GPS coordinates and values are lists of PhotoMetadata objects in that cluster.
     """
-    db = DBSCAN(eps=max_distance_meters / 111320, min_samples=1, metric='haversine').fit([
+    METERS_PER_DEGREE = 111320  # 1 degree is approximately 111.32 km
+    db = DBSCAN(eps=max_distance_meters / METERS_PER_DEGREE, min_samples=1, metric='haversine').fit([
         (photo.gps_metadata.get_latitude(), photo.gps_metadata.get_longitude())
         for photo in photos])
     clusters = []
@@ -21,10 +22,10 @@ def cluster_by_distance(photos: list[Metadata], max_distance_meters: float) -> l
                 latitude=sum(photo.gps_metadata.get_latitude() for photo in cluster_photos) / len(cluster_photos),
                 longitude=sum(photo.gps_metadata.get_longitude() for photo in cluster_photos) / len(cluster_photos)
             )
-            clusters.append(Cluster(center=cluster_center, photos=cluster_photos))
+            clusters.append(DistanceCluster(center=cluster_center, photos=cluster_photos))
     return clusters
 
-def cluster_by_identity(photos: list[Metadata]) -> list[Cluster]:
+def cluster_by_identity(photos: list[Metadata]) -> list[DistanceCluster]:
     """
     Cluster photos by identity GPS coordinates (each photo forms its own cluster).
     Args:
@@ -32,4 +33,4 @@ def cluster_by_identity(photos: list[Metadata]) -> list[Cluster]:
     Returns:
         list[PhotoCluster]: A list of PhotoCluster objects, each containing a single photo.
     """
-    return [ Cluster(center=photo.gps_metadata, photos=[photo]) for photo in photos ]
+    return [ DistanceCluster(center=photo.gps_metadata, photos=[photo]) for photo in photos ]

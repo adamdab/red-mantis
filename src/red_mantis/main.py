@@ -34,7 +34,7 @@ def main():
     
     image_paths = extractors.extract_all_photo_paths(Path(args.photo_dir))
 
-    logging.info(f"\nFound {len(image_paths)} JPG files in the directory")
+    logging.info(f"Found {len(image_paths)} JPG files in the directory")
 
 
     tracable_photos = []
