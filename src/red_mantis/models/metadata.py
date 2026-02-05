@@ -30,7 +30,23 @@ class DMSGPSMetadata:
         return self._convert_dms_to_decimal(self.dms_longitude, self.lon_ref)
     
 @dataclass(frozen=True)
+class DecimalGPSMetadata:
+    latitude: float
+    longitude: float
+
+    def get_latitude(self) -> float:
+        return self.latitude
+    
+    def get_longitude(self) -> float:
+        return self.longitude
+    
+@dataclass(frozen=True)
 class PhotoMetadata:
     img_path: str
     gps_metadata: GPSMetadata | None
     date_taken: str | None = None
+
+@dataclass(frozen=True)
+class PhotoCluster:
+    center: GPSMetadata
+    photos: list[PhotoMetadata]

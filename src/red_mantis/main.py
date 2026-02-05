@@ -3,7 +3,7 @@ from pathlib import Path
 from contextlib import suppress
 
 from red_mantis.core import extractors
-from red_mantis.core import kml
+from red_mantis.core import kml, transformer
 
 def main():
     parser = argparse.ArgumentParser(
@@ -13,6 +13,10 @@ def main():
     parser.add_argument('photo_dir',
                         type=str,
                         help='Directory containing photos to process')
+    parser.add_argument('--cluster-dist',
+                        type=float,
+                        default=50.0,
+                        help='Distance in meters for clustering photos')
     parser.add_argument('--output',
                         type=str,
                         default='travel.kml',
@@ -34,9 +38,12 @@ def main():
             if photo_metadata.gps_metadata:
                 tracable_photos.append(photo_metadata)
 
-    print(f"...Of which {len(tracable_photos)} contain GPS information.")
+    print(f"...Of which {len(tracable_photos)} contain GPS information.")    
 
-    kml.generate(Path(args.output), tracable_photos)    
+    clustered_photos = transformer.cluster_by_distance(tracable_photos, max_distance_meters=args.cluster_dist)
+    print(f"...Clustered into {len(clustered_photos)} groups based on distance.")
+    
+    kml.generate(Path(args.output), clustered_photos)
 
     print("red-mantis has finished successfully.")
     print("...Done.")
