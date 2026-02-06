@@ -1,12 +1,18 @@
 import logging
 
-banner = r"""
-______         _  ___  ___            _   _     
-| ___ \       | | |  \/  |           | | (_)    
-| |_/ /___  __| | | .  . | __ _ _ __ | |_ _ ___ 
-|    // _ \/ _` | | |\/| |/ _` | '_ \| __| / __|
-| |\ \  __/ (_| | | |  | | (_| | | | | |_| \__ \
-\_| \_\___|\__,_| \_|  |_/\__,_|_| |_|\__|_|___/                                                
+red = "\x1b[31m"
+green = "\x1b[32m"
+pink = "\x1b[35m"
+reset = "\x1b[0m"
+
+
+banner = fr"""
+{red}______         _ {reset} {green}___  ___            _   _     {reset}
+{red}| ___ \       | |{reset} {green}|  \/  |           | | (_)    {reset}
+{red}| |_/ /___  __| |{reset} {green}| .  . | __ _ _ __ | |_ _ ___ {reset}
+{red}|    // _ \/ _` |{reset} {green}| |\/| |/ _` | '_ \| __| / __|{reset}
+{red}| |\ \  __/ (_| |{reset} {green}| |  | | (_| | | | | |_| \__ \{reset}
+{red}\_| \_\___|\__,_|{reset} {green}\_|  |_/\__,_|_| |_|\__|_|___/{reset}                                                
 """
 
 def print_startup(args):
@@ -17,8 +23,6 @@ def _print_banner():
     print(banner)
 
 def _print_args(args):
-    pink = "\x1b[35m"
-    reset = "\x1b[0m"
     for arg, value in vars(args).items():
         print(f"{arg}:{pink}{value}{reset}")
     print()
