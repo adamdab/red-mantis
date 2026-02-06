@@ -17,9 +17,12 @@ def main():
                         type=float,
                         default=50.0,
                         help='Distance in meters for clustering photos')
-    parser.add_argument('--create-travel-lines',
+    parser.add_argument('--skip-travel-lines',
                         action='store_true',
-                        help='Create travel lines in the KML output')
+                        help='Skip travel lines in the KML output')
+    parser.add_argument('--skip-travel-points',
+                        action='store_true',
+                        help='Skip creating travel points in the KML output')
     parser.add_argument('--output',
                         type=str,
                         default='travel.kml',
@@ -34,7 +37,8 @@ def main():
         input_directory=Path(args.photo_dir),
         output_directory=Path(args.output),
         clustering_threshold=args.cluster_dist,
-        create_travel_lines=args.create_travel_lines,
+        create_travel_lines=not args.skip_travel_lines,
+        create_travel_points=not args.skip_travel_points,
         silent_mode=args.silent
     )
 

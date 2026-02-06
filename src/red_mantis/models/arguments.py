@@ -8,6 +8,7 @@ class MantisPlan:
     output_directory: Path
     clustering_threshold: float
     create_travel_lines: bool
+    create_travel_points: bool
     silent_mode: bool
 
 @dataclass(frozen=True)
@@ -16,3 +17,4 @@ class KMLGenerationPlan:
     file_path: Path
     photos: list
     create_travel_lines: bool
+    create_travel_points: bool

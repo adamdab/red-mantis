@@ -34,7 +34,8 @@ def execute(plan: MantisPlan):
     kml_plan = KMLGenerationPlan(
         file_path=plan.output_directory,
         photos=clustered_photos,
-        create_travel_lines=plan.create_travel_lines
+        create_travel_lines=plan.create_travel_lines,
+        create_travel_points=plan.create_travel_points
     )
 
     kml.generate(kml_plan)

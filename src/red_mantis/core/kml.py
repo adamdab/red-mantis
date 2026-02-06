@@ -11,7 +11,8 @@ def generate(plan: KMLGenerationPlan) -> None:
     
     logging.info(f"Generating KML file at: {plan.file_path}")
     
-    _generate_cluster_points(kml, plan.photos)
+    if plan.create_travel_points:
+        _generate_cluster_points(kml, plan.photos)
     if plan.create_travel_lines:
         _generate_travel_lines(kml, plan.photos)
 
