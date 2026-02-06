@@ -41,5 +41,7 @@ def _generate_travel_lines(kml:simplekml.Kml, photos: list[Cluster]):
                      for metadata in clusters]
         ls.style.linestyle.width = 3
         ls.style.linestyle.color = _get_color(idx)
+        ls.tesalite = 1
+        ls.altitudemode = simplekml.AltitudeMode.clamptoground
         idx += 1
     logging.info(f"Added {len(sorted_clusters)} travel lines to KML")
