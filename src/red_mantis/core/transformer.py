@@ -16,7 +16,7 @@ def cluster_by_distance(photos: list[Metadata],
     """
     METERS_PER_DEGREE = 111320  # 1 degree is approximately 111.32 km
     db = DBSCAN(eps=max_distance_meters / METERS_PER_DEGREE,
-                min_samples=1,
+                min_samples=2,
                 metric='haversine')
     db.fit([
         (photo.gps_metadata.get_latitude(), photo.gps_metadata.get_longitude())
