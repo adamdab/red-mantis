@@ -16,4 +16,5 @@ jobs:
       - name: Install test tools
         run: pip install pytest coverage
       - name: Run tests
-        run: pytest -q
+        run: coverage run -m pytest
+      
