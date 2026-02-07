@@ -1,4 +1,4 @@
-name: build-and-test
+name: Test
 on: [push]
 jobs:
   build-and-test:
@@ -15,7 +15,7 @@ jobs:
             pip install uv
       - name: Install dependencies
         run: uv build --no-cache
-      - name: Build package
-        run: uv build --no-cache
       - name: Run tests
-        run: pytest
+        run: |
+            uv pip install pytest coverage
+            uv run pytest
