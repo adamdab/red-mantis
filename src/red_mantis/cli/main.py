@@ -16,7 +16,7 @@ def main():
     parser.add_argument('--cluster-dist',
                         type=float,
                         default=50.0,
-                        help='Distance in meters for clustering photos')
+                        help='Distance in meters for clustering photos, to disable clustering set to 0')
     parser.add_argument('--skip-travel-lines',
                         action='store_true',
                         help='Skip travel lines in the KML output')

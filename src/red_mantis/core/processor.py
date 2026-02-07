@@ -26,8 +26,11 @@ def execute(plan: MantisPlan):
 
     logging.info(f"{len(tracable_photos)}/{len(image_paths)} contain GPS information")
 
-    clustered_photos = transformer.cluster_by_distance(tracable_photos,
-                                                       max_distance_meters=plan.clustering_threshold)
+    if plan.clustering_threshold > 0:
+        clustered_photos = transformer.cluster_by_distance(tracable_photos,
+                                                            max_distance_meters=plan.clustering_threshold)
+    else:
+        clustered_photos = transformer.cluster_by_identity(tracable_photos)
     
     logging.info(f"Clustered into {len(clustered_photos)} groups")
     
