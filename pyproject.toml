@@ -5,6 +5,7 @@ description = "Tool to plot your pictures into world map!"
 readme = "README.md"
 requires-python = ">=3.13"
 dependencies = [
+    "coverage>=7.13.3",
     "pillow>=12.1.0",
     "pydantic>=2.12.5",
     "pydantic-settings>=2.12.0",

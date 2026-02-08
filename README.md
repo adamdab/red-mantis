@@ -69,22 +69,6 @@ src/red_mantis/
     └── logging_setup.py        # Logging configuration
 ```
 
-## Testing
-
-Run the test suite with pytest:
-
-```bash
-uv pip install pytest coverage
-uv run pytest -q
-```
-
-For coverage report:
-
-```bash
-uv run coverage run -m pytest -q
-uv run coverage report
-```
-
 ## Supported Formats
 
 - JPG / JPEG images with EXIF metadata
